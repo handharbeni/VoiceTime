@@ -1,32 +1,29 @@
 package mhandharbeni.com.voicetime;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,33 +41,66 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     ArrayList<Locale> languages;
 
-    String firstPatternEN = "Now is ";
-    String firstPatterIN = "Sekarang Sudah Jam ";
-
-    String timePatternSore = " Sore ";
-    String timePatternSiang = " Siang ";
-    String timePatternPagi = " Pagi ";
-    String timePatternMalam = " Malam ";
+    String firstPatternEN = "Now is,  ";
+    String firstPatterIN = "Sekarang Sudah Jam  ";
 
     String completeString = "";
 
     private TextToSpeech mTts;
     private int MY_DATA_CHECK_CODE = 2008;
-    private String TAG=MainActivity.class.getSimpleName();
+    private String TAG = MainActivity.class.getSimpleName();
 
     private String language = "en", region = "US";
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initPermission();
+
         setContentView(R.layout.activity_main);
+
         ButterKnife.bind(this);
+
+
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, AddAlarm.class);
+                startActivity(i);
+            }
+        });
 
         initSupportLanguage();
 
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        initModule();
+    }
+
+    private void initModule() {
+        sharedPreferences = getSharedPreferences(getString(R.string.sharedkey), Context.MODE_PRIVATE);
+    }
+
+    private void updateData(String key, String value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    private String getData(String key) {
+        String defaultValue = getResources().getString(R.string.default_string);
+        return sharedPreferences.getString(key, defaultValue);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -104,13 +134,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     @OnClick(R.id.emergencyCall)
     public void showEmergencyPad() {
+        sendMessage();
+
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_USER_ACTION);
-        callIntent.setData(Uri.parse("tel:081556617741"));
+        callIntent.setData(Uri.parse("tel:"+sharedPreferences.getString(AddAlarm.KEY_NODARURAT, "0")));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         startActivity(callIntent);
+    }
+
+    private void sendMessage(){
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(sharedPreferences.getString(AddAlarm.KEY_NODARURATSMS, "0"), null, "Here's my location {}, i need you now", null, null);
     }
 
     private String splitString(String string, String regex, int index){
@@ -127,10 +164,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             int requestCode, int resultCode, Intent data) {
         if (requestCode == MY_DATA_CHECK_CODE) {
             if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                // success, create the TTS instance
                 mTts = new TextToSpeech(this, this);
             } else {
-                // missing data, install it
                 Intent installIntent = new Intent();
                 installIntent.setAction(
                         TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
@@ -145,13 +180,18 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }else{
             completeString += firstPatterIN;
         }
-
         int hourNow;
         int minuteNow;
-        if (hour > 12){
+        if (hour == 0){
+            if (language.equalsIgnoreCase("en")){
+                completeString += " 12 " + ",";
+            }else{
+                completeString += "12 Malam Lewat ";
+            }
+        }else if (hour > 12){
             hourNow = hour-12;
             if (language.equalsIgnoreCase("en")){
-                completeString += hourNow;
+                completeString += hourNow + ",";
             }else{
                 if (hourNow > 6){
                     completeString += hourNow+" Malam Lewat ";
@@ -162,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }else{
             hourNow = hour;
             if (language.equalsIgnoreCase("en")){
-                completeString += hourNow;
+                completeString += hourNow + ",";
             }else{
                 if (hourNow < 9){
                     completeString += hourNow+" Pagi Lewat ";
@@ -171,13 +211,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 }
             }
         }
-
         minuteNow = minutes;
-
-        completeString += minuteNow;
-
+        completeString += " "+minuteNow+" ";
         if (language.equalsIgnoreCase("en")){
-            completeString += ampm;
+            completeString += ", "+ampm.toUpperCase();
         }else{
             completeString += " Menit";
         }
@@ -185,7 +222,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     @Override
     public void onInit(int status) {
-
         mTts.setLanguage(new Locale(language, region));
         HashMap<String, String> myHashAlarm = new HashMap();
         myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_STREAM,
@@ -199,6 +235,18 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             if (locale.getDisplayName().equalsIgnoreCase("Bahasa Indonesia")){
                 language = "in";
                 region = "ID";
+            }
+        }
+    }
+
+    private void initPermission(){
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.SET_ALARM) != PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.SET_ALARM}, 1);
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+                requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 5);
             }
         }
     }

@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">VoiceTime</string>
     <string name="action_settings">Settings</string>
+
+    <string name="sharedkey">VOICETIME</string>
+    <string name="default_string">NULL</string>
+    <string name="default_integer">0</string>
+    <string name="placeholder_settingnohp">Setting Nomor Handphone</string>
+    <string name="placeholder_settingnohpdarurat">Nomor Handphone Darurat</string>
+    <string name="jam_obat_1">Jam Obat 1</string>
+    <string name="jam_obat_2">Jam Obat 2</string>
+    <string name="jam_obat_3">Jam Obat 3</string>
+    <string name="obat_1">Obat 1</string>
+    <string name="obat_2">Obat 2</string>
+    <string name="obat_3">Obat 3</string>
+    <string name="simpan">SIMPAN</string>
+    <string name="no_handphone_sms">NO HANDPHONE SMS</string>
 </resources>
