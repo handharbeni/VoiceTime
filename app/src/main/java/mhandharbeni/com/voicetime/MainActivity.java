@@ -17,6 +17,7 @@ import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -222,11 +223,19 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     @Override
     public void onInit(int status) {
-        mTts.setLanguage(new Locale(language, region));
-        HashMap<String, String> myHashAlarm = new HashMap();
-        myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_STREAM,
-                String.valueOf(AudioManager.STREAM_ALARM));
-        mTts.speak(completeString, TextToSpeech.QUEUE_FLUSH, myHashAlarm);
+        if (status == TextToSpeech.SUCCESS){
+            mTts.setLanguage(new Locale(language, region));
+            HashMap<String, String> myHashAlarm = new HashMap();
+            myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_STREAM,
+                    String.valueOf(AudioManager.STREAM_ALARM));
+            mTts.speak(completeString, TextToSpeech.QUEUE_FLUSH, myHashAlarm);
+        }else{
+            HashMap<String, String> myHashAlarm = new HashMap();
+            myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_STREAM,
+                    String.valueOf(AudioManager.STREAM_ALARM));
+            mTts.speak(completeString, TextToSpeech.QUEUE_FLUSH, myHashAlarm);
+            Toast.makeText(this, "Your Device Not Compatible With Text To Speech", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

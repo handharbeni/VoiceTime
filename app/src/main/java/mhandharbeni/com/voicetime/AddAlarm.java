@@ -278,7 +278,7 @@ public class AddAlarm extends AppCompatActivity {
 
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, hour);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
         alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmIntent);
@@ -296,7 +296,7 @@ public class AddAlarm extends AppCompatActivity {
 
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, hour);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
         alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmIntent);
