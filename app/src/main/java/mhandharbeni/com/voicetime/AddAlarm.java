@@ -1,5 +1,6 @@
 package mhandharbeni.com.voicetime;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
@@ -26,12 +27,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
+import mhandharbeni.com.voicetime.alarms.Alarm;
 
 /**
  * Created by Beni on 30/03/2018.
  */
 
-public class AddAlarm extends AppCompatActivity {
+public class AddAlarm extends AppCompatActivity{
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -222,7 +224,7 @@ public class AddAlarm extends AppCompatActivity {
     }
 
     @OnClick({R.id.btnObat1, R.id.btnObat2, R.id.btnObat3})
-    public void changeAlarm(AppCompatButton button){
+    public void changeAlarm(Button button){
         switch (button.getId()){
             case R.id.btnObat1:
                 showTimeDialog(obat1);
@@ -238,9 +240,17 @@ public class AddAlarm extends AppCompatActivity {
     }
 
     public void showTimeDialog(final EditText editText){
+        if (!editText.getText().toString().equalsIgnoreCase("0")){
+            Log.d(TAG, "onTimeSet: "+editText.getText().toString());
+            String hourx = editText.getText().toString().split(":")[0];
+            String minutex = editText.getText().toString().split(":")[1];
+            cancelAlarm(Integer.valueOf(hourx), Integer.valueOf(minutex));
+        }
+
         new TimePickerDialog(getWindow().getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
                 String hour = hourOfDay > 9 ? String.valueOf(hourOfDay): "0"+String.valueOf(hourOfDay);
                 String menit = minute > 9 ? String.valueOf(minute): "0"+String.valueOf(minute);
                 editText.setText(hour+":"+menit);
@@ -271,37 +281,49 @@ public class AddAlarm extends AppCompatActivity {
     }
 
     private void setAlarm(Integer hour, Integer minute){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-
-        AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-
-        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, alarmIntent);
-        if (alarmMgr != null){
-            alarmMgr.cancel(alarmIntent);
-        }
-        Log.d(TAG, "setAlarm: "+alarmMgr.toString());
+        Alarm alarm = Alarm.builder()
+                .hour(hour)
+                .minutes(minute)
+                .build();
+        alarm.setEnabled(true);
+//        mAsyncUpdateHandler.asyncInsert(alarm);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTimeInMillis(System.currentTimeMillis());
+//        calendar.set(Calendar.HOUR_OF_DAY, hour);
+//        calendar.set(Calendar.MINUTE, minute);
+//
+//        AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(this, AlarmReceiver.class);
+//        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+//
+//        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+//                AlarmManager.INTERVAL_DAY, alarmIntent);
+//        if (alarmMgr != null){
+//            alarmMgr.cancel(alarmIntent);
+//        }
+//        Log.d(TAG, "setAlarm: Set"+alarmMgr.toString());
     }
 
     private void cancelAlarm(Integer hour, Integer minute){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-
-        AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-
-        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, alarmIntent);
-        Log.d(TAG, "setAlarm: "+alarmMgr.toString());
-
-        alarmMgr.cancel(alarmIntent);
+        Alarm alarm = Alarm.builder()
+                .hour(hour)
+                .minutes(minute)
+                .build();
+        alarm.setEnabled(false);
+//        mAsyncUpdateHandler.asyncInsert(alarm);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTimeInMillis(System.currentTimeMillis());
+//        calendar.set(Calendar.HOUR_OF_DAY, hour);
+//        calendar.set(Calendar.MINUTE, minute);
+//
+//        AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(this, AlarmReceiver.class);
+//        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+//
+//        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+//                AlarmManager.INTERVAL_DAY, alarmIntent);
+//        Log.d(TAG, "setAlarm: Cancel"+alarmMgr.toString());
+//
+//        alarmMgr.cancel(alarmIntent);
     }
 }

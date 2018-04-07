@@ -21,6 +21,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Log.d(TAG, "onReceive: Run");
         Vibrator vibrator = (Vibrator) context
                 .getSystemService(Context.VIBRATOR_SERVICE);
+        assert vibrator != null;
         vibrator.vibrate(10000);
     }
 }

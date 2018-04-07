@@ -57,38 +57,50 @@ public class BootReceiver extends BroadcastReceiver {
     private void doSet(){
         if (sChckObat1){
             String hourMinute = sObat1;
-            int hour = Integer.valueOf(hourMinute.split(":")[0]);
-            int menit = Integer.valueOf(hourMinute.split(":")[1]);
-            setAlarm(hour, menit);
+            if (!hourMinute.equalsIgnoreCase("0")){
+                int hour = Integer.valueOf(hourMinute.split(":")[0]);
+                int menit = Integer.valueOf(hourMinute.split(":")[1]);
+                setAlarm(hour, menit);
+            }
         }else{
             String hourMinute = sObat1;
-            int hour = Integer.valueOf(hourMinute.split(":")[0]);
-            int menit = Integer.valueOf(hourMinute.split(":")[1]);
-            cancelAlarm(hour, menit);
+            if (!hourMinute.equalsIgnoreCase("0")) {
+                int hour = Integer.valueOf(hourMinute.split(":")[0]);
+                int menit = Integer.valueOf(hourMinute.split(":")[1]);
+                cancelAlarm(hour, menit);
+            }
         }
 
         if (sChckObat2){
             String hourMinute = sObat2;
-            int hour = Integer.valueOf(hourMinute.split(":")[0]);
-            int menit = Integer.valueOf(hourMinute.split(":")[1]);
-            setAlarm(hour, menit);
+            if (!hourMinute.equalsIgnoreCase("0")) {
+                int hour = Integer.valueOf(hourMinute.split(":")[0]);
+                int menit = Integer.valueOf(hourMinute.split(":")[1]);
+                setAlarm(hour, menit);
+            }
         }else{
             String hourMinute = sObat2;
-            int hour = Integer.valueOf(hourMinute.split(":")[0]);
-            int menit = Integer.valueOf(hourMinute.split(":")[1]);
-            cancelAlarm(hour, menit);
+            if (!hourMinute.equalsIgnoreCase("0")) {
+                int hour = Integer.valueOf(hourMinute.split(":")[0]);
+                int menit = Integer.valueOf(hourMinute.split(":")[1]);
+                cancelAlarm(hour, menit);
+            }
         }
 
         if (sChckObat3){
             String hourMinute = sObat3;
-            int hour = Integer.valueOf(hourMinute.split(":")[0]);
-            int menit = Integer.valueOf(hourMinute.split(":")[1]);
-            setAlarm(hour, menit);
+            if (!hourMinute.equalsIgnoreCase("0")) {
+                int hour = Integer.valueOf(hourMinute.split(":")[0]);
+                int menit = Integer.valueOf(hourMinute.split(":")[1]);
+                setAlarm(hour, menit);
+            }
         }else{
             String hourMinute = sObat3;
-            int hour = Integer.valueOf(hourMinute.split(":")[0]);
-            int menit = Integer.valueOf(hourMinute.split(":")[1]);
-            cancelAlarm(hour, menit);
+            if (!hourMinute.equalsIgnoreCase("0")) {
+                int hour = Integer.valueOf(hourMinute.split(":")[0]);
+                int menit = Integer.valueOf(hourMinute.split(":")[1]);
+                cancelAlarm(hour, menit);
+            }
         }
 
     }
