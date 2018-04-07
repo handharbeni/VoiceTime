@@ -39,11 +39,11 @@ import static mhandharbeni.com.voicetime.util.TimeFormatUtils.formatTime;
 public class UpcomingAlarmReceiver extends BroadcastReceiver {
     private static final String TAG = "UpcomingAlarmReceiver";
     /*TOneverDO: not private*/
-    private static final String ACTION_DISMISS_NOW = "com.philliphsu.clock2.action.DISMISS_NOW";
+    private static final String ACTION_DISMISS_NOW = "com.mhandharbeni.voicetime.action.DISMISS_NOW";
 
-    public static final String ACTION_CANCEL_NOTIFICATION = "com.philliphsu.clock2.action.CANCEL_NOTIFICATION";
-    public static final String ACTION_SHOW_SNOOZING = "com.philliphsu.clock2.action.SHOW_SNOOZING";
-    public static final String EXTRA_ALARM = "com.philliphsu.clock2.extra.ALARM";
+    public static final String ACTION_CANCEL_NOTIFICATION = "com.mhandharbeni.voicetime.action.CANCEL_NOTIFICATION";
+    public static final String ACTION_SHOW_SNOOZING = "com.mhandharbeni.voicetime.action.SHOW_SNOOZING";
+    public static final String EXTRA_ALARM = "com.mhandharbeni.voicetime.extra.ALARM";
 
     @Override
     public void onReceive(final Context context, final Intent intent) {

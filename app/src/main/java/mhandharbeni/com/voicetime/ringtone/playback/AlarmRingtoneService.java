@@ -36,7 +36,6 @@ import static mhandharbeni.com.voicetime.util.TimeFormatUtils.formatTime;
 
 public class AlarmRingtoneService extends RingtoneService<Alarm> {
     private static final String TAG = "AlarmRingtoneService";
-    /* TOneverDO: not private */
     private static final String ACTION_SNOOZE = "com.mhandharbeni.voicetime.ringtone.action.SNOOZE";
     private static final String ACTION_DISMISS = "com.mhandharbeni.voicetime.ringtone.action.DISMISS";
 
@@ -50,7 +49,7 @@ public class AlarmRingtoneService extends RingtoneService<Alarm> {
             if (ACTION_SNOOZE.equals(intent.getAction())) {
                 mAlarmController.snoozeAlarm(getRingingObject());
             } else if (ACTION_DISMISS.equals(intent.getAction())) {
-                mAlarmController.cancelAlarm(getRingingObject(), false, true); // TODO do we really need to cancel the intent and alarm?
+                mAlarmController.cancelAlarm(getRingingObject(), false, true);
             } else {
                 throw new UnsupportedOperationException();
             }

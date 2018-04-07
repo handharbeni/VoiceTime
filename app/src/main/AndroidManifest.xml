@@ -38,6 +38,32 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".alarms.background.PendingAlarmScheduler"
+            android:enabled="true"
+            android:exported="false">
+        </receiver>
+        <receiver
+            android:name=".alarms.background.OnBootUpReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".alarms.background.OnBootUpAlarmScheduler"
+            android:enabled="true"
+            android:exported="false">
+        </service>
+
+        <service
+            android:name=".ringtone.playback.AlarmRingtoneService"
+            android:enabled="true"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>

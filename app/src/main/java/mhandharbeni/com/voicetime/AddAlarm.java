@@ -28,12 +28,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnFocusChange;
 import mhandharbeni.com.voicetime.alarms.Alarm;
+import mhandharbeni.com.voicetime.alarms.data.AsyncAlarmsTableUpdateHandler;
+import mhandharbeni.com.voicetime.alarms.misc.AlarmController;
+import mhandharbeni.com.voicetime.list.ScrollHandler;
 
 /**
  * Created by Beni on 30/03/2018.
  */
 
-public class AddAlarm extends AppCompatActivity{
+public class AddAlarm extends AppCompatActivity implements ScrollHandler {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -94,6 +97,10 @@ public class AddAlarm extends AppCompatActivity{
     public static String KEY_CHKOBAT2 = "CHKOBAT2";
     public static String KEY_CHKOBAT3 = "CHKOBAT3";
 
+    private AsyncAlarmsTableUpdateHandler mAsyncUpdateHandler;
+    private AlarmController mAlarmController;
+    private View mSnackbarAnchor;
+
     Calendar calendar;
     private String TAG = AddAlarm.class.getSimpleName();
 
@@ -133,7 +140,11 @@ public class AddAlarm extends AppCompatActivity{
 
 
     private void initModule() {
+        mSnackbarAnchor = findViewById(R.id.maincontent);
+
         sharedPreferences = getSharedPreferences(getString(R.string.sharedkey), Context.MODE_PRIVATE);
+        mAlarmController = new AlarmController(getApplicationContext(), mSnackbarAnchor);
+        mAsyncUpdateHandler = new AsyncAlarmsTableUpdateHandler(getApplicationContext(), mSnackbarAnchor, this, mAlarmController);
     }
 
     private void initData(){
@@ -190,8 +201,10 @@ public class AddAlarm extends AppCompatActivity{
                     int hour = Integer.valueOf(hourMinute.split(":")[0]);
                     int menit = Integer.valueOf(hourMinute.split(":")[1]);
                     if (checkBox.isChecked()){
+                        Log.d(TAG, "checkChange: Checked");
                         setAlarm(hour, menit);
                     }else{
+                        Log.d(TAG, "checkChange: unChecked");
                         cancelAlarm(hour, menit);
                     }
                 }
@@ -202,8 +215,10 @@ public class AddAlarm extends AppCompatActivity{
                     int hour = Integer.valueOf(hourMinute.split(":")[0]);
                     int menit = Integer.valueOf(hourMinute.split(":")[1]);
                     if (checkBox.isChecked()){
+                        Log.d(TAG, "checkChange: Checked");
                         setAlarm(hour, menit);
                     }else{
+                        Log.d(TAG, "checkChange: unChecked");
                         cancelAlarm(hour, menit);
                     }
                 }
@@ -214,8 +229,10 @@ public class AddAlarm extends AppCompatActivity{
                     int hour = Integer.valueOf(hourMinute.split(":")[0]);
                     int menit = Integer.valueOf(hourMinute.split(":")[1]);
                     if (checkBox.isChecked()){
+                        Log.d(TAG, "checkChange: Checked");
                         setAlarm(hour, menit);
                     }else{
+                        Log.d(TAG, "checkChange: unChecked");
                         cancelAlarm(hour, menit);
                     }
                 }
@@ -286,22 +303,7 @@ public class AddAlarm extends AppCompatActivity{
                 .minutes(minute)
                 .build();
         alarm.setEnabled(true);
-//        mAsyncUpdateHandler.asyncInsert(alarm);
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-//        calendar.set(Calendar.HOUR_OF_DAY, hour);
-//        calendar.set(Calendar.MINUTE, minute);
-//
-//        AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-//        Intent intent = new Intent(this, AlarmReceiver.class);
-//        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-//
-//        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-//                AlarmManager.INTERVAL_DAY, alarmIntent);
-//        if (alarmMgr != null){
-//            alarmMgr.cancel(alarmIntent);
-//        }
-//        Log.d(TAG, "setAlarm: Set"+alarmMgr.toString());
+        mAsyncUpdateHandler.asyncInsert(alarm);
     }
 
     private void cancelAlarm(Integer hour, Integer minute){
@@ -310,20 +312,16 @@ public class AddAlarm extends AppCompatActivity{
                 .minutes(minute)
                 .build();
         alarm.setEnabled(false);
-//        mAsyncUpdateHandler.asyncInsert(alarm);
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-//        calendar.set(Calendar.HOUR_OF_DAY, hour);
-//        calendar.set(Calendar.MINUTE, minute);
-//
-//        AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-//        Intent intent = new Intent(this, AlarmReceiver.class);
-//        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-//
-//        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-//                AlarmManager.INTERVAL_DAY, alarmIntent);
-//        Log.d(TAG, "setAlarm: Cancel"+alarmMgr.toString());
-//
-//        alarmMgr.cancel(alarmIntent);
+        mAsyncUpdateHandler.asyncDelete(alarm);
+    }
+
+    @Override
+    public void setScrollToStableId(long id) {
+
+    }
+
+    @Override
+    public void scrollToPosition(int position) {
+
     }
 }
