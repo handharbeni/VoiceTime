@@ -81,14 +81,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/obat_1" />
 
-                    <EditText
-                        android:layout_marginLeft="10dp"
+                    <TextView
                         android:id="@+id/obat1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:ems="10"
-                        android:inputType="text"
-                        android:hint="@string/jam_obat_1" />
+                        android:hint="@string/jam_obat_1"
+                        android:inputType="text" />
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/btnObat1"
                         android:text="SETTING"
@@ -108,14 +108,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/obat_2" />
 
-                    <EditText
-                        android:layout_marginLeft="10dp"
+                    <TextView
                         android:id="@+id/obat2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:ems="10"
-                        android:inputType="text"
-                        android:hint="@string/jam_obat_2" />
+                        android:hint="@string/jam_obat_2"
+                        android:inputType="text" />
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/btnObat2"
                         android:text="SETTING"
@@ -135,14 +135,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/obat_3" />
 
-                    <EditText
-                        android:layout_marginLeft="10dp"
+                    <TextView
                         android:id="@+id/obat3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:ems="10"
-                        android:inputType="text"
-                        android:hint="@string/jam_obat_3" />
+                        android:hint="@string/jam_obat_3"
+                        android:inputType="text" />
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/btnObat3"
                         android:text="SETTING"

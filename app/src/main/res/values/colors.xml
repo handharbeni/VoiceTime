@@ -19,13 +19,13 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#1C46A0</color>
-    <color name="colorPrimaryDark">#143782</color>
-    <color name="colorAccent">#FF5252</color>
+    <color name="colorPrimary">#3d61af</color>
+    <color name="colorPrimaryDark">#385186</color>
+    <color name="colorAccent">#a98787</color>
     <color name="colorPrimaryFallback">#2355BE</color>
 
-    <color name="colorPrimaryInverse">#212121</color>
-    <color name="colorPrimaryDarkInverse">@android:color/black</color>
+    <color name="colorPrimaryInverse">#ffffff</color>
+    <color name="colorPrimaryDarkInverse">@android:color/white</color>
     <!-- Same as colorAccent, can't find a lighter accent color that looks red enough.. -->
     <color name="colorAccentInverse">#FF5252</color>
     <color name="colorPrimaryFallbackInverse">#303030</color>

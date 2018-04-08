@@ -15,9 +15,6 @@ import android.view.Menu;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by Phillip Hsu on 5/31/2016.
- */
 public abstract class BaseActivity extends AppCompatActivity {
 
     @Nullable
