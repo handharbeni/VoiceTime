@@ -1,22 +1,3 @@
-/*
- * Copyright 2017 Phillip Hsu
- *
- * This file is part of ClockPlus.
- *
- * ClockPlus is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * ClockPlus is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ClockPlus.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package mhandharbeni.com.voicetime.alarms.background;
 
 import android.app.IntentService;
@@ -35,12 +16,12 @@ import mhandharbeni.com.voicetime.alarms.misc.AlarmController;
 public class OnBootUpAlarmScheduler extends IntentService {
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    private static final String ACTION_FOO = "com.mhandharbeni.voicetime.action.FOO";
-    private static final String ACTION_BAZ = "com.mhandharbeni.voicetime.action.BAZ";
+    private static final String ACTION_FOO = "mhandharbeni.com.voicetime.action.FOO";
+    private static final String ACTION_BAZ = "mhandharbeni.com.voicetime.action.BAZ";
 
     // TODO: Rename parameters
-    private static final String EXTRA_PARAM1 = "com.mhandharbeni.voicetime.extra.PARAM1";
-    private static final String EXTRA_PARAM2 = "com.mhandharbeni.voicetime.extra.PARAM2";
+    private static final String EXTRA_PARAM1 = "mhandharbeni.com.voicetime.extra.PARAM1";
+    private static final String EXTRA_PARAM2 = "mhandharbeni.com.voicetime.extra.PARAM2";
 
     public OnBootUpAlarmScheduler() {
         super("OnBootUpAlarmScheduler");

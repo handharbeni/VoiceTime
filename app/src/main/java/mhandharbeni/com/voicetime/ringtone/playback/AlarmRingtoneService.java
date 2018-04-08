@@ -1,22 +1,3 @@
-/*
- * Copyright 2017 Phillip Hsu
- *
- * This file is part of ClockPlus.
- *
- * ClockPlus is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * ClockPlus is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ClockPlus.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package mhandharbeni.com.voicetime.ringtone.playback;
 
 import android.app.Notification;
@@ -36,8 +17,9 @@ import static mhandharbeni.com.voicetime.util.TimeFormatUtils.formatTime;
 
 public class AlarmRingtoneService extends RingtoneService<Alarm> {
     private static final String TAG = "AlarmRingtoneService";
-    private static final String ACTION_SNOOZE = "com.mhandharbeni.voicetime.ringtone.action.SNOOZE";
-    private static final String ACTION_DISMISS = "com.mhandharbeni.voicetime.ringtone.action.DISMISS";
+    /* TOneverDO: not private */
+    private static final String ACTION_SNOOZE = "mhandharbeni.com.voicetime.ringtone.action.SNOOZE";
+    private static final String ACTION_DISMISS = "mhandharbeni.com.voicetime.ringtone.action.DISMISS";
 
     private AlarmController mAlarmController;
 
@@ -49,7 +31,7 @@ public class AlarmRingtoneService extends RingtoneService<Alarm> {
             if (ACTION_SNOOZE.equals(intent.getAction())) {
                 mAlarmController.snoozeAlarm(getRingingObject());
             } else if (ACTION_DISMISS.equals(intent.getAction())) {
-                mAlarmController.cancelAlarm(getRingingObject(), false, true);
+                mAlarmController.cancelAlarm(getRingingObject(), false, true); // TODO do we really need to cancel the intent and alarm?
             } else {
                 throw new UnsupportedOperationException();
             }

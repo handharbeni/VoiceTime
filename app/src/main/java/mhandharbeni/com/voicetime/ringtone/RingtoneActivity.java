@@ -23,17 +23,13 @@ import mhandharbeni.com.voicetime.ringtone.playback.RingtoneService;
 import mhandharbeni.com.voicetime.util.LocalBroadcastHelper;
 import mhandharbeni.com.voicetime.util.ParcelableUtil;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 public abstract class RingtoneActivity<T extends Parcelable> extends BaseActivity {
     private static final String TAG = "RingtoneActivity";
 
     // Shared with RingtoneService
-    public static final String ACTION_FINISH = "com.mhandharbeni.voicetime.ringtone.action.FINISH";
-    public static final String EXTRA_RINGING_OBJECT = "com.mhandharbeni.voicetime.ringtone.extra.RINGING_OBJECT";
-    public static final String ACTION_SHOW_SILENCED = "com.mhandharbeni.voicetime.ringtone.action.SHOW_SILENCED";
+    public static final String ACTION_FINISH = "mhandharbeni.com.voicetime.ringtone.action.FINISH";
+    public static final String EXTRA_RINGING_OBJECT = "mhandharbeni.com.voicetime.ringtone.extra.RINGING_OBJECT";
+    public static final String ACTION_SHOW_SILENCED = "mhandharbeni.com.voicetime.ringtone.action.SHOW_SILENCED";
 
     private static boolean sIsAlive = false;
     private T mRingingObject;

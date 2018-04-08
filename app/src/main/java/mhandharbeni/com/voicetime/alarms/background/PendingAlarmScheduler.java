@@ -1,22 +1,3 @@
-/*
- * Copyright 2017 Phillip Hsu
- *
- * This file is part of ClockPlus.
- *
- * ClockPlus is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * ClockPlus is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ClockPlus.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package mhandharbeni.com.voicetime.alarms.background;
 
 import android.content.BroadcastReceiver;
@@ -40,7 +21,7 @@ import static mhandharbeni.com.voicetime.util.Preconditions.checkNotNull;
 public class PendingAlarmScheduler extends BroadcastReceiver {
     // We include the class name in the string to distinguish this constant from the one defined
     // in UpcomingAlarmReceiver.
-    public static final String EXTRA_ALARM_ID = "com.philliphsu.clock2.alarms.background.PendingAlarmScheduler.extra.ALARM_ID";
+    public static final String EXTRA_ALARM_ID = "mhandharbeni.com.voicetime.alarms.background.PendingAlarmScheduler.extra.ALARM_ID";
 
     @Override
     public void onReceive(final Context context, Intent intent) {

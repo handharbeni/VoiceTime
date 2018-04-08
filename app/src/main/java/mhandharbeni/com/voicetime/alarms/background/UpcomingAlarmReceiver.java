@@ -1,22 +1,3 @@
-/*
- * Copyright 2017 Phillip Hsu
- *
- * This file is part of ClockPlus.
- *
- * ClockPlus is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * ClockPlus is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ClockPlus.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package mhandharbeni.com.voicetime.alarms.background;
 
 import android.app.Notification;
@@ -27,23 +8,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
-import mhandharbeni.com.voicetime.MainActivity;
 import mhandharbeni.com.voicetime.R;
+import mhandharbeni.com.voicetime.SettingActivity;
 import mhandharbeni.com.voicetime.alarms.Alarm;
 import mhandharbeni.com.voicetime.alarms.misc.AlarmController;
+import mhandharbeni.com.voicetime.util.ContentIntentUtils;
 import mhandharbeni.com.voicetime.util.ParcelableUtil;
 
 import static mhandharbeni.com.voicetime.util.TimeFormatUtils.formatTime;
+
 
 // TODO: Consider registering this locally instead of in the manifest.
 public class UpcomingAlarmReceiver extends BroadcastReceiver {
     private static final String TAG = "UpcomingAlarmReceiver";
     /*TOneverDO: not private*/
-    private static final String ACTION_DISMISS_NOW = "com.mhandharbeni.voicetime.action.DISMISS_NOW";
+    private static final String ACTION_DISMISS_NOW = "mhandharbeni.com.voicetime.action.DISMISS_NOW";
 
-    public static final String ACTION_CANCEL_NOTIFICATION = "com.mhandharbeni.voicetime.action.CANCEL_NOTIFICATION";
-    public static final String ACTION_SHOW_SNOOZING = "com.mhandharbeni.voicetime.action.SHOW_SNOOZING";
-    public static final String EXTRA_ALARM = "com.mhandharbeni.voicetime.extra.ALARM";
+    public static final String ACTION_CANCEL_NOTIFICATION = "mhandharbeni.com.voicetime.action.CANCEL_NOTIFICATION";
+    public static final String ACTION_SHOW_SNOOZING = "mhandharbeni.com.voicetime.action.SHOW_SNOOZING";
+    public static final String EXTRA_ALARM = "mhandharbeni.com.voicetime.extra.ALARM";
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
@@ -92,6 +75,8 @@ public class UpcomingAlarmReceiver extends BroadcastReceiver {
                     .setSmallIcon(R.drawable.ic_alarm_24dp)
                     .setContentTitle(title)
                     .setContentText(text)
+                    .setContentIntent(ContentIntentUtils.create(context,
+                            SettingActivity.PAGE_ALARMS, id))
                     .addAction(R.drawable.ic_dismiss_alarm_24dp,
                             context.getString(R.string.dismiss_now), piDismiss)
                     .build();

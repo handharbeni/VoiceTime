@@ -1,22 +1,3 @@
-/*
- * Copyright 2017 Phillip Hsu
- *
- * This file is part of ClockPlus.
- *
- * ClockPlus is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * ClockPlus is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ClockPlus.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package mhandharbeni.com.voicetime.alarms.data;
 
 import android.database.Cursor;
@@ -32,9 +13,6 @@ import static mhandharbeni.com.voicetime.alarms.misc.DaysOfWeek.THURSDAY;
 import static mhandharbeni.com.voicetime.alarms.misc.DaysOfWeek.TUESDAY;
 import static mhandharbeni.com.voicetime.alarms.misc.DaysOfWeek.WEDNESDAY;
 
-/**
- * Created by Phillip Hsu on 7/30/2016.
- */
 // An alternative method to creating an Alarm from a cursor is to
 // make an Alarm constructor that takes an Cursor param. However,
 // this method has the advantage of keeping the contents of
@@ -66,7 +44,7 @@ public class AlarmCursor extends BaseItemCursor<Alarm> {
         alarm.setEnabled(isTrue(AlarmsTable.COLUMN_ENABLED));
         alarm.setSnoozing(getLong(getColumnIndexOrThrow(AlarmsTable.COLUMN_SNOOZING_UNTIL_MILLIS)));
         alarm.setRecurring(SUNDAY, isTrue(AlarmsTable.COLUMN_SUNDAY));
-        alarm.setRecurring(MONDAY, isTrue(AlarmsTable.COLUMN_MONDAY)) ;
+        alarm.setRecurring(MONDAY, isTrue(AlarmsTable.COLUMN_MONDAY));
         alarm.setRecurring(TUESDAY, isTrue(AlarmsTable.COLUMN_TUESDAY));
         alarm.setRecurring(WEDNESDAY, isTrue(AlarmsTable.COLUMN_WEDNESDAY));
         alarm.setRecurring(THURSDAY, isTrue(AlarmsTable.COLUMN_THURSDAY));

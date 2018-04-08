@@ -28,6 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SettingActivity"/>
         <activity android:name=".AddAlarm" android:theme="@style/AppTheme.NoActionBar"/>
         <receiver android:name=".alarms.background.UpcomingAlarmReceiver"
             android:exported="false"

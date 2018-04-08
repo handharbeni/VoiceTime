@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -39,7 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         // When false, the system sets the default values only if this method has
         // never been called in the past (or the KEY_HAS_SET_DEFAULT_VALUES in the
         // default value shared preferences file is false).
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+//        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         // ========================================================================================
         // TOneverDO: Set theme after setContentView()
         final String themeDark = getString(R.string.theme_dark);

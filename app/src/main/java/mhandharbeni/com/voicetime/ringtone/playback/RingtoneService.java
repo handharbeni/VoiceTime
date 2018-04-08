@@ -1,22 +1,3 @@
-/*
- * Copyright 2017 Phillip Hsu
- *
- * This file is part of ClockPlus.
- *
- * ClockPlus is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * ClockPlus is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ClockPlus.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package mhandharbeni.com.voicetime.ringtone.playback;
 
 import android.app.Notification;
@@ -36,28 +17,18 @@ import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
 
-import mhandharbeni.com.voicetime.MainActivity;
 import mhandharbeni.com.voicetime.R;
+import mhandharbeni.com.voicetime.ringtone.RingtoneActivity;
 import mhandharbeni.com.voicetime.util.LocalBroadcastHelper;
 import mhandharbeni.com.voicetime.util.ParcelableUtil;
 
-/**
- * Runs in the foreground. While it can still be killed by the system, it stays alive significantly
- * longer than if it does not run in the foreground. The longevity should be sufficient for practical
- * use. In fact, if the app is used properly, longevity should be a non-issue; realistically, the lifetime
- * of the RingtoneService will be tied to that of its RingtoneActivity because users are not likely to
- * navigate away from the Activity without making an action. But if they do accidentally navigate away,
- * they have plenty of time to make the desired action via the notification.
- *
- * TOneverDO: Change this to not be a started service!
- */
 public abstract class RingtoneService<T extends Parcelable> extends Service {
     private static final String TAG = "RingtoneService";
 
     // public okay
-    public static final String ACTION_NOTIFY_MISSED = "com.philliphsu.clock2.ringtone.action.NOTIFY_MISSED";
+    public static final String ACTION_NOTIFY_MISSED = "mhandharbeni.com.voicetime.ringtone.action.NOTIFY_MISSED";
 //    public static final String EXTRA_ITEM_ID = RingtoneActivity.EXTRA_ITEM_ID;
-    public static final String EXTRA_RINGING_OBJECT = MainActivity.EXTRA_RINGING_OBJECT;
+    public static final String EXTRA_RINGING_OBJECT = RingtoneActivity.EXTRA_RINGING_OBJECT;
 
     private AudioManager mAudioManager;
     private RingtoneLoop mRingtone;
@@ -72,7 +43,7 @@ public abstract class RingtoneService<T extends Parcelable> extends Service {
         @Override
         public void run() {
             onAutoSilenced();
-            LocalBroadcastHelper.sendBroadcast(RingtoneService.this, MainActivity.ACTION_SHOW_SILENCED);
+            LocalBroadcastHelper.sendBroadcast(RingtoneService.this, RingtoneActivity.ACTION_SHOW_SILENCED);
             stopSelf();
         }
     };
@@ -90,7 +61,7 @@ public abstract class RingtoneService<T extends Parcelable> extends Service {
 
     /**
      * Callback invoked when this Service is stopping and the corresponding
-     * {@link MainActivity} is finishing.
+     * {@link RingtoneActivity} is finishing.
      */
     protected abstract void onAutoSilenced();
 
@@ -201,7 +172,7 @@ public abstract class RingtoneService<T extends Parcelable> extends Service {
         // that subclasses implement, and call that here instead. The subclass of
         // RingtoneActivity would define their own ACTION_FINISH constants, and
         // the RingtoneService subclass retrieves that constant and returns it to us.
-        LocalBroadcastHelper.sendBroadcast(this, MainActivity.ACTION_FINISH);
+        LocalBroadcastHelper.sendBroadcast(this, RingtoneActivity.ACTION_FINISH);
     }
 
     /**

@@ -31,16 +31,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
-    public static final int    PAGE_ALARMS          = 0;
-    public static final int    PAGE_TIMERS          = 1;
-    public static final int    PAGE_STOPWATCH       = 2;
-    public static final int    REQUEST_THEME_CHANGE = 5;
-    public static final String EXTRA_SHOW_PAGE      = "com.mhandharbeni.voicetime.extra.SHOW_PAGE";
-
-    public static final String ACTION_FINISH = "com.mhandharbeni.voicetime.ringtone.action.FINISH";
-    public static final String EXTRA_RINGING_OBJECT = "com.mhandharbeni.voicetime.ringtone.extra.RINGING_OBJECT";
-    public static final String ACTION_SHOW_SILENCED = "com.mhandharbeni.voicetime.ringtone.action.SHOW_SILENCED";
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.voiceTime)

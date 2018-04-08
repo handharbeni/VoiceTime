@@ -1,22 +1,3 @@
-/*
- * Copyright 2017 Phillip Hsu
- *
- * This file is part of ClockPlus.
- *
- * ClockPlus is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * ClockPlus is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with ClockPlus.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package mhandharbeni.com.voicetime.alarms.misc;
 
 import android.app.AlarmManager;
@@ -28,15 +9,15 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 
-import mhandharbeni.com.voicetime.MainActivity;
 import mhandharbeni.com.voicetime.R;
+import mhandharbeni.com.voicetime.SettingActivity;
 import mhandharbeni.com.voicetime.alarms.Alarm;
 import mhandharbeni.com.voicetime.alarms.background.PendingAlarmScheduler;
 import mhandharbeni.com.voicetime.alarms.background.UpcomingAlarmReceiver;
 import mhandharbeni.com.voicetime.alarms.data.AlarmsTableManager;
 import mhandharbeni.com.voicetime.ringtone.AlarmActivity;
-import mhandharbeni.com.voicetime.ringtone.RingtoneActivity;
 import mhandharbeni.com.voicetime.ringtone.playback.AlarmRingtoneService;
+import mhandharbeni.com.voicetime.util.ContentIntentUtils;
 import mhandharbeni.com.voicetime.util.DelayedSnackbarHandler;
 import mhandharbeni.com.voicetime.util.DurationUtils;
 import mhandharbeni.com.voicetime.util.ParcelableUtil;
@@ -47,12 +28,6 @@ import static android.app.PendingIntent.getActivity;
 import static java.util.concurrent.TimeUnit.HOURS;
 import static mhandharbeni.com.voicetime.util.TimeFormatUtils.formatTime;
 
-/**
- * Created by Phillip Hsu on 7/10/2016.
- *
- * API to control alarm states and update the UI.
- * TODO: Rename to AlarmStateHandler? AlarmStateController?
- */
 public final class AlarmController {
     private static final String TAG = "AlarmController";
 
@@ -98,15 +73,13 @@ public final class AlarmController {
         final long ringAt = alarm.isSnoozed() ? alarm.snoozingUntil() : alarm.ringsAt();
         final PendingIntent alarmIntent = alarmIntent(alarm, false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            PendingIntent showIntent = ContentIntentUtils.create(mAppContext, MainActivity.PAGE_ALARMS, alarm.getId());
-//            AlarmManager.AlarmClockInfo info = new AlarmManager.AlarmClockInfo(ringAt, showIntent);
-//            am.setAlarmClock(info, alarmIntent);
+            PendingIntent showIntent = ContentIntentUtils.create(mAppContext, SettingActivity.PAGE_ALARMS, alarm.getId());
+            AlarmManager.AlarmClockInfo info = new AlarmManager.AlarmClockInfo(ringAt, showIntent);
+            am.setAlarmClock(info, alarmIntent);
         } else {
             // WAKEUP alarm types wake the CPU up, but NOT the screen;
             // you would handle that yourself by using a wakelock, etc..
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                am.setExact(AlarmManager.RTC_WAKEUP, ringAt, alarmIntent);
-            }
+            am.setExact(AlarmManager.RTC_WAKEUP, ringAt, alarmIntent);
             // Show alarm in the status bar
             Intent alarmChanged = new Intent("android.intent.action.ALARM_CHANGED");
             alarmChanged.putExtra("alarmSet", true/*enabled*/);
@@ -235,7 +208,7 @@ public final class AlarmController {
 
     private PendingIntent alarmIntent(Alarm alarm, boolean retrievePrevious) {
         Intent intent = new Intent(mAppContext, AlarmActivity.class)
-                .putExtra(MainActivity.EXTRA_RINGING_OBJECT, ParcelableUtil.marshall(alarm));
+                .putExtra(AlarmActivity.EXTRA_RINGING_OBJECT, ParcelableUtil.marshall(alarm));
         int flag = retrievePrevious ? FLAG_NO_CREATE : FLAG_CANCEL_CURRENT;
         // Even when we try to retrieve a previous instance that actually did exist,
         // null can be returned for some reason. Thus, we don't checkNotNull().

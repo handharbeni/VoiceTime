@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.mhandharbeni.voicetime.settings.SettingsActivity">
+    tools:context="mhandharbeni.com.voicetime.settings.SettingsActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
