@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.SET_ALARM"/>
     <uses-permission android:name="android.permission.SEND_SMS"/>
 
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,6 +29,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddAlarm" android:theme="@style/AppTheme.NoActionBar"/>
+        <receiver android:name=".alarms.background.UpcomingAlarmReceiver"
+            android:exported="false"
+            android:enabled="true">
+        </receiver>
         <receiver android:name=".BootReceiver"
             android:enabled="true">
             <intent-filter>
@@ -64,6 +71,14 @@
             android:enabled="true"
             android:exported="false">
         </service>
+        <activity
+            android:name=".ringtone.AlarmActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/title_activity_ringtone"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.mhandharbeni.voicetime.RingtoneActivity"
+            android:screenOrientation="nosensor">
+        </activity>
     </application>
 
 </manifest>

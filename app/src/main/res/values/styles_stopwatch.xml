@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Stopwatch" parent="TextAppearance.AppCompat">
+        <!--<item name="android:gravity">center</item>-->
+        <!--<item name="android:textSize">@dimen/text_size_display_3</item>-->
+    </style>
+    <style name="SideButton" parent="SelectableButton">
+        <!--<item name="android:layout_width">@dimen/side_button_size</item>-->
+        <!--<item name="android:layout_height">@dimen/side_button_size</item>-->
+        <!--<item name="android:visibility">invisible</item>-->
+        <!--<item name="layout_columnWeight">1</item>-->
+        <!--<item name="layout_gravity">center</item>-->
+    </style>
+    <style name="AddLapButton" parent="SideButton">
+        <!--<item name="android:src">@drawable/ic_add_lap_40dp</item>-->
+    </style>
+    <style name="StopButton" parent="SideButton">
+        <!--<item name="android:src">@drawable/ic_stop_40dp</item>-->
+    </style>
+</resources>

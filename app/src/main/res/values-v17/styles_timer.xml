@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TimerAction.Menu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">0dp</item>
+        <item name="android:padding">@dimen/cardview_action_icon_margin</item>
+    </style>
+
+    <style name="TimerText.FieldLabel">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:layout_marginEnd">@dimen/field_end_margin</item>
+    </style>
+
+    <style name="TimerAction">
+        <!--<item name="android:layout_width">@dimen/cardview_action_icon_size</item>-->
+        <!--<item name="android:layout_height">@dimen/cardview_action_icon_size</item>-->
+        <!--<item name="android:background">?selectableItemBackground</item>-->
+        <!--<item name="android:layout_marginStart">@dimen/cardview_action_icon_margin</item>-->
+        <!--<item name="android:layout_marginEnd">@dimen/cardview_action_icon_margin</item>-->
+        <!--<item name="android:layout_marginBottom">@dimen/cardview_action_icon_margin</item>-->
+        <!--&lt;!&ndash;https://code.google.com/p/android/issues/detail?id=18220&ndash;&gt;-->
+        <!--&lt;!&ndash;"... there is no support for color state list in the ImageView tint attribute-->
+        <!--prior to API 21." ImageButton is a subclass of ImageView.&ndash;&gt;-->
+        <!--<item name="android:tint">?attr/themedIconTint</item>-->
+    </style>
+</resources>

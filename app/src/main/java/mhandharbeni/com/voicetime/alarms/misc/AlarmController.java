@@ -34,6 +34,8 @@ import mhandharbeni.com.voicetime.alarms.Alarm;
 import mhandharbeni.com.voicetime.alarms.background.PendingAlarmScheduler;
 import mhandharbeni.com.voicetime.alarms.background.UpcomingAlarmReceiver;
 import mhandharbeni.com.voicetime.alarms.data.AlarmsTableManager;
+import mhandharbeni.com.voicetime.ringtone.AlarmActivity;
+import mhandharbeni.com.voicetime.ringtone.RingtoneActivity;
 import mhandharbeni.com.voicetime.ringtone.playback.AlarmRingtoneService;
 import mhandharbeni.com.voicetime.util.DelayedSnackbarHandler;
 import mhandharbeni.com.voicetime.util.DurationUtils;
@@ -232,7 +234,7 @@ public final class AlarmController {
     }
 
     private PendingIntent alarmIntent(Alarm alarm, boolean retrievePrevious) {
-        Intent intent = new Intent(mAppContext, MainActivity.class)
+        Intent intent = new Intent(mAppContext, AlarmActivity.class)
                 .putExtra(MainActivity.EXTRA_RINGING_OBJECT, ParcelableUtil.marshall(alarm));
         int flag = retrievePrevious ? FLAG_NO_CREATE : FLAG_CANCEL_CURRENT;
         // Even when we try to retrieve a previous instance that actually did exist,
