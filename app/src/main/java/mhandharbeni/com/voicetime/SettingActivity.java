@@ -144,13 +144,10 @@ public class SettingActivity extends BaseActivity {
 //        setTabIcon(PAGE_STOPWATCH, R.drawable.ic_stopwatch_24dp, tabIconColor);
 
         // TODO: @OnCLick instead.
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment f = mSectionsPagerAdapter.getFragment(mViewPager.getCurrentItem());
-                if (f instanceof RecyclerViewFragment) {
-                    ((RecyclerViewFragment) f).onFabClick();
-                }
+        mFab.setOnClickListener(view -> {
+            Fragment f = mSectionsPagerAdapter.getFragment(mViewPager.getCurrentItem());
+            if (f instanceof RecyclerViewFragment) {
+                ((RecyclerViewFragment) f).onFabClick();
             }
         });
 
@@ -179,24 +176,21 @@ public class SettingActivity extends BaseActivity {
                 // #post() works for any state the app is in, especially robust against
                 // cases when the app was not previously in memory--i.e. this got called
                 // in onCreate().
-                mViewPager.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mViewPager.setCurrentItem(targetPage, true/*smoothScroll*/);
-                        final long stableId = intent.getLongExtra(EXTRA_SCROLL_TO_STABLE_ID, -1);
-                        if (stableId != -1) {
-                            RecyclerViewFragment rvFrag = (RecyclerViewFragment)
-                                    mSectionsPagerAdapter.getFragment(targetPage);
-                            if (performScroll) {
-                                rvFrag.performScrollToStableId(stableId);
-                            } else {
-                                rvFrag.setScrollToStableId(stableId);
-                            }
+                mViewPager.post(() -> {
+                    mViewPager.setCurrentItem(targetPage, true/*smoothScroll*/);
+                    final long stableId = intent.getLongExtra(EXTRA_SCROLL_TO_STABLE_ID, -1);
+                    if (stableId != -1) {
+                        RecyclerViewFragment rvFrag = (RecyclerViewFragment)
+                                mSectionsPagerAdapter.getFragment(targetPage);
+                        if (performScroll) {
+                            rvFrag.performScrollToStableId(stableId);
+                        } else {
+                            rvFrag.setScrollToStableId(stableId);
                         }
-                        intent.setAction(null);
-                        intent.removeExtra(EXTRA_SHOW_PAGE);
-                        intent.removeExtra(EXTRA_SCROLL_TO_STABLE_ID);
                     }
+                    intent.setAction(null);
+                    intent.removeExtra(EXTRA_SHOW_PAGE);
+                    intent.removeExtra(EXTRA_SCROLL_TO_STABLE_ID);
                 });
             }
         }

@@ -7,7 +7,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SET_ALARM"/>
     <uses-permission android:name="android.permission.SEND_SMS"/>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -75,7 +76,8 @@
         <activity
             android:name=".ringtone.AlarmActivity"
             android:excludeFromRecents="true"
-            android:label="@string/title_activity_ringtone"
+            android:label=
+                "@string/title_activity_ringtone"
             android:launchMode="singleTask"
             android:taskAffinity="com.mhandharbeni.voicetime.RingtoneActivity"
             android:screenOrientation="nosensor">

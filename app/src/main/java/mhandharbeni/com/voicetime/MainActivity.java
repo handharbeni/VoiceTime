@@ -1,12 +1,19 @@
 package mhandharbeni.com.voicetime;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, LocationListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.voiceTime)
@@ -53,10 +61,18 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private String language = "en", region = "US";
     private SharedPreferences sharedPreferences;
 
+    private LocationManager locationManager;
+
+    private String latitude, longitude;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initPermission();
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
 
         setContentView(R.layout.activity_main);
 
@@ -67,15 +83,26 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, AddAlarm.class);
-                startActivity(i);
-            }
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, AddAlarm.class);
+            startActivity(i);
         });
 
         initSupportLanguage();
+        if (gpsIsEnable()) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "onCreate: PermissionGranted");
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
+            }
+        }
 
     }
 
@@ -146,8 +173,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     private void sendMessage(){
+        if (latitude == null && longitude == null){
+            Toast.makeText(this, "Lokasi Belum Terdeteksi, Tunggu Sebentar", Toast.LENGTH_SHORT).show();
+            return;
+        }
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(sharedPreferences.getString(AddAlarm.KEY_NODARURATSMS, "0"), null, "Here's my location {}, i need you now", null, null);
+        sms.sendTextMessage(sharedPreferences.getString(AddAlarm.KEY_NODARURATSMS, "0"), null, "Here's my location { Longitude : "+longitude+", Latitude : "+latitude+"}, i need you now", null, null);
     }
 
     private String splitString(String string, String regex, int index){
@@ -236,7 +267,30 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             Toast.makeText(this, "Your Device Not Compatible With Text To Speech", Toast.LENGTH_SHORT).show();
         }
     }
-
+    private Boolean gpsIsEnable(){
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+            return true;
+        }else{
+            showGPSDisabledAlertToUser();
+            return false;
+        }
+    }
+    private void showGPSDisabledAlertToUser(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("GPS is disabled in your device. Would you like to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Goto Settings Page To Enable GPS",
+                        (dialog, id) -> {
+                            Intent callGPSSettingIntent = new Intent(
+                                    android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(callGPSSettingIntent);
+                        });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                (dialog, id) -> dialog.cancel());
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
 
     private void initSupportLanguage(){
         for (Locale locale:Locale.getAvailableLocales()){
@@ -251,11 +305,41 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.SET_ALARM) != PackageManager.PERMISSION_GRANTED
                     && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                    && checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.SET_ALARM}, 1);
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-                requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 5);
+                    && checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                        new String[]{Manifest.permission.SET_ALARM,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.CALL_PHONE,
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                }, 1);
+//                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+//                requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 5);
+//                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 6);
             }
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        latitude = String.valueOf(location.getLatitude());
+        longitude = String.valueOf(location.getLongitude());
+        Log.d(TAG, "onLocationChanged: "+location.getLongitude()+"-"+location.getLatitude());
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 }

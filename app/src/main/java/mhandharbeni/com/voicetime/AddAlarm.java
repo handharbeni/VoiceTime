@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -57,13 +58,13 @@ public class AddAlarm extends AppCompatActivity implements ScrollHandler {
     CheckBox chckObat3;
 
     @BindView(R.id.obat1)
-    EditText obat1;
+    TextView obat1;
 
     @BindView(R.id.obat2)
-    EditText obat2;
+    TextView obat2;
 
     @BindView(R.id.obat3)
-    EditText obat3;
+    TextView obat3;
 
     @BindView(R.id.save)
     Button save;
@@ -114,12 +115,7 @@ public class AddAlarm extends AppCompatActivity implements ScrollHandler {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
     }
 
@@ -256,7 +252,7 @@ public class AddAlarm extends AppCompatActivity implements ScrollHandler {
 
     }
 
-    public void showTimeDialog(final EditText editText){
+    public void showTimeDialog(final TextView editText){
         if (!editText.getText().toString().equalsIgnoreCase("0")){
             Log.d(TAG, "onTimeSet: "+editText.getText().toString());
             String hourx = editText.getText().toString().split(":")[0];
@@ -264,34 +260,31 @@ public class AddAlarm extends AppCompatActivity implements ScrollHandler {
             cancelAlarm(Integer.valueOf(hourx), Integer.valueOf(minutex));
         }
 
-        new TimePickerDialog(getWindow().getContext(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        new TimePickerDialog(getWindow().getContext(), (view, hourOfDay, minute) -> {
 
-                String hour = hourOfDay > 9 ? String.valueOf(hourOfDay): "0"+String.valueOf(hourOfDay);
-                String menit = minute > 9 ? String.valueOf(minute): "0"+String.valueOf(minute);
-                editText.setText(hour+":"+menit);
-                if (editText.getId() == R.id.obat1){
-                    /*obat1*/
-                    if (chckObat1.isChecked()){
-                        setAlarm(hourOfDay, minute);
-                    }else{
-                        cancelAlarm(hourOfDay, minute);
-                    }
-                }else if(editText.getId() == R.id.obat2){
-                    /*obat2*/
-                    if (chckObat2.isChecked()){
-                        setAlarm(hourOfDay, minute);
-                    }else{
-                        cancelAlarm(hourOfDay, minute);
-                    }
-                }else if(editText.getId() == R.id.obat3){
-                    /*obat3*/
-                    if (chckObat3.isChecked()){
-                        setAlarm(hourOfDay, minute);
-                    }else{
-                        cancelAlarm(hourOfDay, minute);
-                    }
+            String hour = hourOfDay > 9 ? String.valueOf(hourOfDay): "0"+String.valueOf(hourOfDay);
+            String menit = minute > 9 ? String.valueOf(minute): "0"+String.valueOf(minute);
+            editText.setText(hour+":"+menit);
+            if (editText.getId() == R.id.obat1){
+                /*obat1*/
+                if (chckObat1.isChecked()){
+                    setAlarm(hourOfDay, minute);
+                }else{
+                    cancelAlarm(hourOfDay, minute);
+                }
+            }else if(editText.getId() == R.id.obat2){
+                /*obat2*/
+                if (chckObat2.isChecked()){
+                    setAlarm(hourOfDay, minute);
+                }else{
+                    cancelAlarm(hourOfDay, minute);
+                }
+            }else if(editText.getId() == R.id.obat3){
+                /*obat3*/
+                if (chckObat3.isChecked()){
+                    setAlarm(hourOfDay, minute);
+                }else{
+                    cancelAlarm(hourOfDay, minute);
                 }
             }
         }, 24, 60, true).show();
